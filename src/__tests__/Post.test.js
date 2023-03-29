@@ -1,4 +1,4 @@
-import React, { render, screen } from "@testing-library/react";
+import React, { fireEvent, render, screen } from "@testing-library/react";
 import Post from "../components/Post";
 import renderer from "react-test-renderer";
 
@@ -48,8 +48,8 @@ describe("Post", () => {
     const buttons = screen.getAllByRole("button");
 
     expect(buttons).toHaveLength(1);
-    expect(buttons[0]).toHaveTextContent("Upvote this")
-  })
+    expect(buttons[0]).toHaveTextContent("Upvote this");
+  });
 
   test("Assert correct number of tags displayed", () => {
     render(
@@ -58,8 +58,23 @@ describe("Post", () => {
         handleUpvote={validProps.handleUpvote}
       />
     );
-
     const listitems = screen.getAllByRole("listitem");
+
     expect(listitems).toHaveLength(3);
-  })  
+  });
+
+  test("assert upvote functions calls correct method", () => {
+    render(
+      <Post
+        postData={validProps.postData}
+        handleUpvote={validProps.handleUpvote}
+      />
+    );
+
+    fireEvent.click(screen.getByRole("button"));
+
+    expect(validProps.handleUpvote).toHaveBeenCalled();
+    expect(validProps.handleUpvote).toHaveBeenCalledTimes(1);
+    expect(validProps.handleUpvote).toHaveBeenCalledWith(validProps.postData.title);
+  })
 });
