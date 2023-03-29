@@ -36,4 +36,30 @@ describe("Post", () => {
 
     expect(screen.getByText("Author: test author")).toBeInTheDocument();
   });
+
+  test("Renders a single button with correct text", () => {
+    render(
+      <Post
+        postData={validProps.postData}
+        handleUpvote={validProps.handleUpvote}
+      />
+    );
+
+    const buttons = screen.getAllByRole("button");
+
+    expect(buttons).toHaveLength(1);
+    expect(buttons[0]).toHaveTextContent("Upvote this")
+  })
+
+  test("Assert correct number of tags displayed", () => {
+    render(
+      <Post
+        postData={validProps.postData}
+        handleUpvote={validProps.handleUpvote}
+      />
+    );
+
+    const listitems = screen.getAllByRole("listitem");
+    expect(listitems).toHaveLength(3);
+  })  
 });
